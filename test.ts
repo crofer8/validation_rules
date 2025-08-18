@@ -1,13 +1,12 @@
 /**
- * Converted Internal Package Validation Rules
+ * Complete Corrected Service Configurations - All Carriers
  * 
  * Generated from: packagevaliadationdump.csv (592 rules)
- * Conversion Date: 2025-01-08
+ * Correction Date: 2025-01-08
  * 
  * Total Services: 192
  * Total Carriers: 46
- * Validation Types: box_fit (38), dimension_limits (45), oversized (109)
- */
+ * 
 
 interface ServiceConfig {
   service_id: string;
@@ -21,23 +20,58 @@ interface ServiceConfig {
     box_dimensions_min_mm?: number[];
     max_single_dimension_mm?: number;
     max_combined_dimensions_mm?: number;
+    combined_calculation_method?: 'standard_sum' | 'length_plus_girth' | 'circumference' | 'custom';
     max_girth_mm?: number;
     max_length_plus_girth_mm?: number;
   };
 }
 
-// EVRI Services (12 services)
+// =============================================================================
+// EVRI Services (12 services) - Standard Sum Calculation
+// =============================================================================
 const evriServices: ServiceConfig[] = [
   {
-    service_id: 'evri_light_large',
-    service_name: 'EVRI Light & Large',
+    service_id: 'evri_48_packets',
+    service_name: 'EVRI 48 Packets',
     carrier: 'EVRI',
-    validation_type: 'oversized',
+    validation_type: 'box_fit',
     constraints: {
-      weight_min_g: 15000,
-      weight_max_g: 30001,
-      max_single_dimension_mm: 1800,
-      max_combined_dimensions_mm: 4200
+      weight_max_g: 999,
+      box_dimensions_mm: [350, 230, 30]
+    }
+  },
+  {
+    service_id: 'evri_24_packets',
+    service_name: 'EVRI 24 Packets',
+    carrier: 'EVRI',
+    validation_type: 'box_fit',
+    constraints: {
+      weight_max_g: 999,
+      box_dimensions_mm: [350, 230, 30]
+    }
+  },
+  {
+    service_id: 'evri_48_parcels',
+    service_name: 'EVRI 48 Parcels',
+    carrier: 'EVRI',
+    validation_type: 'dimension_limits',
+    constraints: {
+      weight_max_g: 15000,
+      max_single_dimension_mm: 1200,
+      max_combined_dimensions_mm: 2250,
+      combined_calculation_method: 'standard_sum'
+    }
+  },
+  {
+    service_id: 'evri_24_parcels',
+    service_name: 'EVRI 24 Parcels',
+    carrier: 'EVRI',
+    validation_type: 'dimension_limits',
+    constraints: {
+      weight_max_g: 15000,
+      max_single_dimension_mm: 1200,
+      max_combined_dimensions_mm: 2250,
+      combined_calculation_method: 'standard_sum'
     }
   },
   {
@@ -63,109 +97,139 @@ const evriServices: ServiceConfig[] = [
     }
   },
   {
-    service_id: 'evri_24_packets',
-    service_name: 'EVRI 24 Packets',
+    service_id: 'evri_light_large',
+    service_name: 'EVRI Light & Large',
     carrier: 'EVRI',
-    validation_type: 'dimension_limits',
+    validation_type: 'oversized',
     constraints: {
-      weight_max_g: 1201,
-      max_single_dimension_mm: 1200,
-      max_combined_dimensions_mm: 2250
+      weight_min_g: 15000,
+      weight_max_g: 30000,
+      max_single_dimension_mm: 1800,
+      max_girth_mm: 2400,
+      max_length_plus_girth_mm: 4200
     }
   },
   {
-    service_id: 'evri_48_packets',
-    service_name: 'EVRI 48 Packets',
+    service_id: 'evri_48_packets_international',
+    service_name: 'EVRI 48 Packets International',
     carrier: 'EVRI',
-    validation_type: 'dimension_limits',
+    validation_type: 'box_fit',
     constraints: {
-      weight_max_g: 1201,
-      max_single_dimension_mm: 1200,
-      max_combined_dimensions_mm: 2250
+      weight_max_g: 999,
+      box_dimensions_mm: [350, 230, 30]
     }
   },
   {
-    service_id: 'evri_24_parcels',
-    service_name: 'EVRI 24 Parcels',
+    service_id: 'evri_24_packets_international',
+    service_name: 'EVRI 24 Packets International',
     carrier: 'EVRI',
-    validation_type: 'dimension_limits',
+    validation_type: 'box_fit',
     constraints: {
-      weight_max_g: 15001,
-      max_single_dimension_mm: 1200,
-      max_combined_dimensions_mm: 2250
+      weight_max_g: 999,
+      box_dimensions_mm: [350, 230, 30]
     }
   },
   {
-    service_id: 'evri_48_parcels',
-    service_name: 'EVRI 48 Parcels',
+    service_id: 'evri_48_parcels_international',
+    service_name: 'EVRI 48 Parcels International',
     carrier: 'EVRI',
     validation_type: 'dimension_limits',
     constraints: {
-      weight_max_g: 15001,
+      weight_max_g: 15000,
       max_single_dimension_mm: 1200,
-      max_combined_dimensions_mm: 2250
+      max_combined_dimensions_mm: 2250,
+      combined_calculation_method: 'standard_sum'
+    }
+  },
+  {
+    service_id: 'evri_24_parcels_international',
+    service_name: 'EVRI 24 Parcels International',
+    carrier: 'EVRI',
+    validation_type: 'dimension_limits',
+    constraints: {
+      weight_max_g: 15000,
+      max_single_dimension_mm: 1200,
+      max_combined_dimensions_mm: 2250,
+      combined_calculation_method: 'standard_sum'
+    }
+  },
+  {
+    service_id: 'evri_light_large_international',
+    service_name: 'EVRI Light & Large International',
+    carrier: 'EVRI',
+    validation_type: 'oversized',
+    constraints: {
+      weight_min_g: 15000,
+      weight_max_g: 30000,
+      max_single_dimension_mm: 1800,
+      max_girth_mm: 2400,
+      max_length_plus_girth_mm: 4200
     }
   }
 ];
 
-// Amazon Services (14 services)  
+// =============================================================================
+// Amazon Services (14 services) - Box Fit Categories
+// =============================================================================
 const amazonServices: ServiceConfig[] = [
   {
-    service_id: 'amazon_shipping_48_extra_large',
-    service_name: 'Amazon Shipping 48 Extra Large',
+    service_id: 'amazon_large_letter',
+    service_name: 'Amazon Large Letter',
     carrier: 'AMAZON',
     validation_type: 'box_fit',
     constraints: {
-      box_dimensions_mm: [1200, 600, 600],
-      max_combined_dimensions_mm: 2450
-    }
-  },
-  {
-    service_id: 'amazon_shipping_24_large',
-    service_name: 'Amazon Shipping 24 Large',
-    carrier: 'AMAZON',
-    validation_type: 'box_fit',
-    constraints: {
-      box_dimensions_mm: [670, 510, 510],
-      max_combined_dimensions_mm: 2450
-    }
-  },
-  {
-    service_id: 'amazon_shipping_48_large_letter',
-    service_name: 'Amazon Shipping 48 Large Letter',
-    carrier: 'AMAZON',
-    validation_type: 'box_fit',
-    constraints: {
+      weight_max_g: 750,
       box_dimensions_mm: [353, 250, 25]
     }
   },
   {
-    service_id: 'amazon_shipping_48_large',
-    service_name: 'Amazon Shipping 48 Large',
+    service_id: 'amazon_small_parcel',
+    service_name: 'Amazon Small Parcel',
     carrier: 'AMAZON',
     validation_type: 'box_fit',
     constraints: {
-      box_dimensions_mm: [670, 510, 510],
-      max_combined_dimensions_mm: 2450
+      weight_max_g: 2000,
+      box_dimensions_mm: [450, 350, 160]
     }
   },
   {
-    service_id: 'amazon_shipping_24_large_letter',
-    service_name: 'Amazon Shipping 24 Large Letter',
+    service_id: 'amazon_standard_parcel',
+    service_name: 'Amazon Standard Parcel',
     carrier: 'AMAZON',
     validation_type: 'box_fit',
     constraints: {
-      box_dimensions_mm: [353, 250, 25]
+      weight_max_g: 7000,
+      box_dimensions_mm: [500, 400, 300]
     }
   },
   {
-    service_id: 'amazon_shipping_24_extra_large',
-    service_name: 'Amazon Shipping 24 Extra Large',
+    service_id: 'amazon_medium_parcel',
+    service_name: 'Amazon Medium Parcel',
     carrier: 'AMAZON',
     validation_type: 'box_fit',
     constraints: {
-      box_dimensions_mm: [1200, 600, 600],
-      max_combined_dimensions_mm: 2450
+      weight_max_g: 15000,
+      box_dimensions_mm: [610, 460, 460]
+    }
+  },
+  {
+    service_id: 'amazon_large_parcel',
+    service_name: 'Amazon Large Parcel',
+    carrier: 'AMAZON',
+    validation_type: 'box_fit',
+    constraints: {
+      weight_max_g: 20000,
+      box_dimensions_mm: [670, 510, 510]
+    }
+  },
+  {
+    service_id: 'amazon_extra_large_parcel',
+    service_name: 'Amazon Extra Large Parcel',
+    carrier: 'AMAZON',
+    validation_type: 'box_fit',
+    constraints: {
+      weight_max_g: 23000,
+      box_dimensions_mm: [1200, 600, 600]
     }
   },
   {
@@ -174,36 +238,22 @@ const amazonServices: ServiceConfig[] = [
     carrier: 'AMAZON',
     validation_type: 'dimension_limits',
     constraints: {
+      weight_max_g: 2000,
       max_single_dimension_mm: 610,
       max_combined_dimensions_mm: 900,
-      weight_max_g: 2000
+      combined_calculation_method: 'standard_sum'
     }
   },
   {
-    service_id: 'amazon_shipping_24_standard',
-    service_name: 'Amazon Shipping 24 Standard',
+    service_id: 'amazon_shipping_24',
+    service_name: 'Amazon Shipping 24',
     carrier: 'AMAZON',
-    validation_type: 'box_fit',
+    validation_type: 'dimension_limits',
     constraints: {
-      box_dimensions_mm: [500, 400, 300]
-    }
-  },
-  {
-    service_id: 'amazon_shipping_48_medium',
-    service_name: 'Amazon Shipping 48 Medium',
-    carrier: 'AMAZON',
-    validation_type: 'box_fit',
-    constraints: {
-      box_dimensions_mm: [610, 460, 460]
-    }
-  },
-  {
-    service_id: 'amazon_shipping_24_small',
-    service_name: 'Amazon Shipping 24 Small',
-    carrier: 'AMAZON',
-    validation_type: 'box_fit',
-    constraints: {
-      box_dimensions_mm: [450, 350, 160]
+      weight_max_g: 2000,
+      max_single_dimension_mm: 610,
+      max_combined_dimensions_mm: 900,
+      combined_calculation_method: 'standard_sum'
     }
   },
   {
@@ -216,23 +266,21 @@ const amazonServices: ServiceConfig[] = [
     }
   },
   {
-    service_id: 'amazon_shipping_48_standard',
-    service_name: 'Amazon Shipping 48 Standard',
+    service_id: 'amazon_shipping_24_small',
+    service_name: 'Amazon Shipping 24 Small',
     carrier: 'AMAZON',
     validation_type: 'box_fit',
     constraints: {
-      box_dimensions_mm: [500, 400, 300]
+      box_dimensions_mm: [450, 350, 160]
     }
   },
   {
-    service_id: 'amazon_shipping_24',
-    service_name: 'Amazon Shipping 24',
+    service_id: 'amazon_shipping_48_medium',
+    service_name: 'Amazon Shipping 48 Medium',
     carrier: 'AMAZON',
-    validation_type: 'dimension_limits',
+    validation_type: 'box_fit',
     constraints: {
-      max_single_dimension_mm: 610,
-      max_combined_dimensions_mm: 900,
-      weight_max_g: 2000
+      box_dimensions_mm: [610, 460, 460]
     }
   },
   {
@@ -243,77 +291,103 @@ const amazonServices: ServiceConfig[] = [
     constraints: {
       box_dimensions_mm: [610, 460, 460]
     }
-  }
-];
-
-// Royal Mail Services (6 services)
-const royalMailServices: ServiceConfig[] = [
+  },
   {
-    service_id: 'royal_mail_48_tracked_trs',
-    service_name: 'Royal Mail 48 Tracked',
-    carrier: 'ROYAL',
-    validation_type: 'oversized',
+    service_id: 'amazon_shipping_48_standard',
+    service_name: 'Amazon Shipping 48 Standard',
+    carrier: 'AMAZON',
+    validation_type: 'box_fit',
     constraints: {
-      weight_max_g: 750,
-      max_single_dimension_mm: 350,
-      max_combined_dimensions_mm: 1040
+      box_dimensions_mm: [500, 400, 300]
     }
   },
   {
-    service_id: 'royal_mail_24_tracked',
-    service_name: 'Royal Mail 24 Tracked',
-    carrier: 'ROYAL',
-    validation_type: 'oversized',
+    service_id: 'amazon_shipping_24_standard',
+    service_name: 'Amazon Shipping 24 Standard',
+    carrier: 'AMAZON',
+    validation_type: 'box_fit',
     constraints: {
-      max_single_dimension_mm: 900,
-      max_combined_dimensions_mm: 1040
-    }
-  },
-  {
-    service_id: 'royal_mail_24_tracked_trn',
-    service_name: 'Royal Mail 24 Tracked',
-    carrier: 'ROYAL',
-    validation_type: 'oversized',
-    constraints: {
-      weight_max_g: 750,
-      max_single_dimension_mm: 700,
-      max_combined_dimensions_mm: 1040
-    }
-  },
-  {
-    service_id: 'royal_mail_48_tracked',
-    service_name: 'Royal Mail 48 Tracked',
-    carrier: 'ROYAL',
-    validation_type: 'oversized',
-    constraints: {
-      max_single_dimension_mm: 900,
-      max_combined_dimensions_mm: 1040
-    }
-  },
-  {
-    service_id: 'royal_mail_international_tracked',
-    service_name: 'Royal Mail International Tracked',
-    carrier: 'ROYAL',
-    validation_type: 'oversized',
-    constraints: {
-      max_single_dimension_mm: 900,
-      max_combined_dimensions_mm: 1040
-    }
-  },
-  {
-    service_id: 'royal_mail_special_delivery',
-    service_name: 'Royal Mail Special Delivery',
-    carrier: 'ROYAL',
-    validation_type: 'oversized',
-    constraints: {
-      max_single_dimension_mm: 900,
-      max_combined_dimensions_mm: 1040
+      box_dimensions_mm: [500, 400, 300]
     }
   }
 ];
 
-// UPS Services (10 services)
+// =============================================================================
+// UPS Services (10 services) - Length + Girth Calculation
+// =============================================================================
 const upsServices: ServiceConfig[] = [
+  {
+    service_id: 'ups_express_saver',
+    service_name: 'UPS Express Saver',
+    carrier: 'UPS',
+    validation_type: 'oversized',
+    constraints: {
+      weight_max_g: 30000,
+      max_single_dimension_mm: 2700,
+      max_combined_dimensions_mm: 4000,
+      combined_calculation_method: 'length_plus_girth'
+    }
+  },
+  {
+    service_id: 'ups_ground_commercial',
+    service_name: 'UPS Ground Commercial',
+    carrier: 'UPS',
+    validation_type: 'oversized',
+    constraints: {
+      weight_max_g: 30000,
+      max_single_dimension_mm: 2700,
+      max_combined_dimensions_mm: 4000,
+      combined_calculation_method: 'length_plus_girth'
+    }
+  },
+  {
+    service_id: 'ups_ground_residential',
+    service_name: 'UPS Ground Residential',
+    carrier: 'UPS',
+    validation_type: 'oversized',
+    constraints: {
+      weight_max_g: 30000,
+      max_single_dimension_mm: 2700,
+      max_combined_dimensions_mm: 4000,
+      combined_calculation_method: 'length_plus_girth'
+    }
+  },
+  {
+    service_id: 'ups_standard_tariff',
+    service_name: 'UPS Standard Tariff',
+    carrier: 'UPS',
+    validation_type: 'oversized',
+    constraints: {
+      weight_max_g: 30000,
+      max_single_dimension_mm: 2700,
+      max_combined_dimensions_mm: 4000,
+      combined_calculation_method: 'length_plus_girth'
+    }
+  },
+  {
+    service_id: 'ups_2_day',
+    service_name: 'UPS 2 Day',
+    carrier: 'UPS',
+    validation_type: 'oversized',
+    constraints: {
+      weight_max_g: 30000,
+      max_single_dimension_mm: 2700,
+      max_combined_dimensions_mm: 4000,
+      combined_calculation_method: 'length_plus_girth'
+    }
+  },
+  {
+    service_id: 'ups_surepost',
+    service_name: 'UPS Surepost',
+    carrier: 'UPS',
+    validation_type: 'oversized',
+    constraints: {
+      weight_max_g: 30000,
+      max_single_dimension_mm: 2700,
+      max_combined_dimensions_mm: 4000,
+      combined_calculation_method: 'length_plus_girth'
+    }
+  },
   {
     service_id: 'ups_us_heavyweight_mi_domestic',
     service_name: 'UPS US Heavyweight MI Domestic',
@@ -325,17 +399,6 @@ const upsServices: ServiceConfig[] = [
     }
   },
   {
-    service_id: 'ups_express_saver',
-    service_name: 'UPS Express Saver',
-    carrier: 'UPS',
-    validation_type: 'oversized',
-    constraints: {
-      weight_max_g: 30000,
-      max_single_dimension_mm: 2700,
-      max_combined_dimensions_mm: 4000
-    }
-  },
-  {
     service_id: 'ups_us_mi_bpm',
     service_name: 'UPS US MI BPM',
     carrier: 'UPS',
@@ -343,61 +406,6 @@ const upsServices: ServiceConfig[] = [
     constraints: {
       weight_max_g: 6803,
       max_single_dimension_mm: 381
-    }
-  },
-  {
-    service_id: 'ups_standard_tariff',
-    service_name: 'UPS Standard Tariff',
-    carrier: 'UPS',
-    validation_type: 'oversized',
-    constraints: {
-      weight_max_g: 30000,
-      max_single_dimension_mm: 2700,
-      max_combined_dimensions_mm: 4000
-    }
-  },
-  {
-    service_id: 'ups_2_day',
-    service_name: 'UPS 2 Day',
-    carrier: 'UPS',
-    validation_type: 'oversized',
-    constraints: {
-      weight_max_g: 30000,
-      max_single_dimension_mm: 2700,
-      max_combined_dimensions_mm: 4000
-    }
-  },
-  {
-    service_id: 'ups_ground_commercial',
-    service_name: 'UPS Ground Commercial',
-    carrier: 'UPS',
-    validation_type: 'oversized',
-    constraints: {
-      weight_max_g: 30000,
-      max_single_dimension_mm: 2700,
-      max_combined_dimensions_mm: 4000
-    }
-  },
-  {
-    service_id: 'ups_ground_residential',
-    service_name: 'UPS Ground Residential',
-    carrier: 'UPS',
-    validation_type: 'oversized',
-    constraints: {
-      weight_max_g: 30000,
-      max_single_dimension_mm: 2700,
-      max_combined_dimensions_mm: 4000
-    }
-  },
-  {
-    service_id: 'ups_surepost',
-    service_name: 'UPS Surepost',
-    carrier: 'UPS',
-    validation_type: 'oversized',
-    constraints: {
-      weight_max_g: 30000,
-      max_single_dimension_mm: 2700,
-      max_combined_dimensions_mm: 4000
     }
   },
   {
@@ -417,12 +425,201 @@ const upsServices: ServiceConfig[] = [
     constraints: {
       weight_max_g: 30000,
       max_single_dimension_mm: 559,
-      max_combined_dimensions_mm: 2794
+      max_combined_dimensions_mm: 2794,
+      combined_calculation_method: 'length_plus_girth'
     }
   }
 ];
 
-// DHL Services (17 services)
+// =============================================================================
+// FedEx Services (9 services) - Length + Girth Calculation
+// =============================================================================
+const fedexServices: ServiceConfig[] = [
+  {
+    service_id: 'fedex_international_connect_ddu',
+    service_name: 'FedEx International Connect DDU',
+    carrier: 'FEDEX',
+    validation_type: 'oversized',
+    constraints: {
+      weight_max_g: 29937,
+      max_single_dimension_mm: 1499,
+      max_combined_dimensions_mm: 3302,
+      combined_calculation_method: 'length_plus_girth'
+    }
+  },
+  {
+    service_id: 'fedex_priority_overnight',
+    service_name: 'FedEx Priority Overnight',
+    carrier: 'FEDEX',
+    validation_type: 'oversized',
+    constraints: {
+      weight_max_g: 31752,
+      max_single_dimension_mm: 1524,
+      max_combined_dimensions_mm: 3302,
+      combined_calculation_method: 'length_plus_girth'
+    }
+  },
+  {
+    service_id: 'fedex_international_connect_plus_gb_ddp',
+    service_name: 'FedEx International Connect Plus GB DDP',
+    carrier: 'FEDEX',
+    validation_type: 'oversized',
+    constraints: {
+      weight_max_g: 29937,
+      max_single_dimension_mm: 1499,
+      max_combined_dimensions_mm: 3302,
+      combined_calculation_method: 'length_plus_girth'
+    }
+  },
+  {
+    service_id: 'fedex_international_connect_plus_gb_ddu',
+    service_name: 'FedEx International Connect Plus GB DDU',
+    carrier: 'FEDEX',
+    validation_type: 'oversized',
+    constraints: {
+      weight_max_g: 29937,
+      max_single_dimension_mm: 1499,
+      max_combined_dimensions_mm: 3302,
+      combined_calculation_method: 'length_plus_girth'
+    }
+  },
+  {
+    service_id: 'fedex_international_connect_ddp',
+    service_name: 'FedEx International Connect DDP',
+    carrier: 'FEDEX',
+    validation_type: 'oversized',
+    constraints: {
+      weight_max_g: 29937,
+      max_single_dimension_mm: 1499,
+      max_combined_dimensions_mm: 3302,
+      combined_calculation_method: 'length_plus_girth'
+    }
+  },
+  {
+    service_id: 'fedex_international_connect_plus',
+    service_name: 'FedEx International Connect Plus',
+    carrier: 'FEDEX',
+    validation_type: 'oversized',
+    constraints: {
+      weight_max_g: 29937,
+      max_single_dimension_mm: 1499,
+      max_combined_dimensions_mm: 3302,
+      combined_calculation_method: 'length_plus_girth'
+    }
+  },
+  {
+    service_id: 'fedex_international_connect_gb_ddu',
+    service_name: 'FedEx International Connect GB DDU',
+    carrier: 'FEDEX',
+    validation_type: 'dimension_limits',
+    constraints: {
+      max_single_dimension_mm: 1499,
+      weight_max_g: 29937
+    }
+  },
+  {
+    service_id: 'fedex_international_connect_gb_ddp',
+    service_name: 'FedEx International Connect GB DDP',
+    carrier: 'FEDEX',
+    validation_type: 'dimension_limits',
+    constraints: {
+      max_single_dimension_mm: 1499,
+      weight_max_g: 29937
+    }
+  },
+  {
+    service_id: 'fedex_international_connect_plus_ddu',
+    service_name: 'FedEx International Connect Plus DDU',
+    carrier: 'FEDEX',
+    validation_type: 'oversized',
+    constraints: {
+      weight_max_g: 29937,
+      max_single_dimension_mm: 1499,
+      max_combined_dimensions_mm: 3302,
+      combined_calculation_method: 'length_plus_girth'
+    }
+  }
+];
+
+// =============================================================================
+// Royal Mail Services (6 services) - Standard Sum Calculation
+// =============================================================================
+const royalMailServices: ServiceConfig[] = [
+  {
+    service_id: 'royal_mail_large_letter',
+    service_name: 'Royal Mail Large Letter',
+    carrier: 'ROYAL',
+    validation_type: 'box_fit',
+    constraints: {
+      weight_max_g: 750,
+      box_dimensions_mm: [353, 250, 25]
+    }
+  },
+  {
+    service_id: 'royal_mail_small_parcel',
+    service_name: 'Royal Mail Small Parcel',
+    carrier: 'ROYAL',
+    validation_type: 'dimension_limits',
+    constraints: {
+      weight_max_g: 2000,
+      max_single_dimension_mm: 450,
+      max_combined_dimensions_mm: 900,
+      combined_calculation_method: 'standard_sum'
+    }
+  },
+  {
+    service_id: 'royal_mail_medium_parcel',
+    service_name: 'Royal Mail Medium Parcel',
+    carrier: 'ROYAL',
+    validation_type: 'dimension_limits',
+    constraints: {
+      weight_max_g: 20000,
+      max_single_dimension_mm: 610,
+      max_combined_dimensions_mm: 900,
+      combined_calculation_method: 'standard_sum'
+    }
+  },
+  {
+    service_id: 'royal_mail_48_tracked',
+    service_name: 'Royal Mail 48 Tracked',
+    carrier: 'ROYAL',
+    validation_type: 'dimension_limits',
+    constraints: {
+      weight_max_g: 2000,
+      max_single_dimension_mm: 610,
+      max_combined_dimensions_mm: 900,
+      combined_calculation_method: 'standard_sum'
+    }
+  },
+  {
+    service_id: 'royal_mail_24_tracked',
+    service_name: 'Royal Mail 24 Tracked',
+    carrier: 'ROYAL',
+    validation_type: 'dimension_limits',
+    constraints: {
+      weight_max_g: 2000,
+      max_single_dimension_mm: 610,
+      max_combined_dimensions_mm: 900,
+      combined_calculation_method: 'standard_sum'
+    }
+  },
+  {
+    service_id: 'royal_mail_special_delivery',
+    service_name: 'Royal Mail Special Delivery',
+    carrier: 'ROYAL',
+    validation_type: 'dimension_limits',
+    constraints: {
+      weight_max_g: 2000,
+      max_single_dimension_mm: 610,
+      max_combined_dimensions_mm: 900,
+      combined_calculation_method: 'standard_sum'
+    }
+  }
+];
+
+// =============================================================================
+// DHL Services (17 services) - Mixed Calculation Methods
+// =============================================================================
 const dhlServices: ServiceConfig[] = [
   {
     service_id: 'dhl_service_point',
@@ -432,7 +629,8 @@ const dhlServices: ServiceConfig[] = [
     constraints: {
       weight_max_g: 20000,
       box_dimensions_min_mm: [20, 110, 150],
-      max_combined_dimensions_mm: 3000
+      max_combined_dimensions_mm: 3000,
+      combined_calculation_method: 'circumference'
     }
   },
   {
@@ -481,7 +679,8 @@ const dhlServices: ServiceConfig[] = [
     constraints: {
       weight_max_g: 31500,
       max_single_dimension_mm: 1200,
-      max_combined_dimensions_mm: 3000
+      max_combined_dimensions_mm: 3000,
+      combined_calculation_method: 'standard_sum'
     }
   },
   {
@@ -520,18 +719,20 @@ const dhlServices: ServiceConfig[] = [
     constraints: {
       weight_max_g: 70000,
       max_single_dimension_mm: 1200,
-      max_combined_dimensions_mm: 3000
+      max_combined_dimensions_mm: 3000,
+      combined_calculation_method: 'standard_sum'
     }
   },
   {
     service_id: 'dhl_global_mail',
     service_name: 'DHL Global Mail',
     carrier: 'DHL',
-    validation_type: 'oversized',
+    validation_type: 'dimension_limits',
     constraints: {
       weight_max_g: 2000,
       max_single_dimension_mm: 600,
-      max_combined_dimensions_mm: 900
+      max_combined_dimensions_mm: 900,
+      combined_calculation_method: 'standard_sum'
     }
   },
   {
@@ -594,173 +795,33 @@ const dhlServices: ServiceConfig[] = [
   }
 ];
 
-// FedEx Services (9 services)
-const fedexServices: ServiceConfig[] = [
+// =============================================================================
+// USPS Services (9 services) - Length + Girth Calculation
+// =============================================================================
+const uspsServices: ServiceConfig[] = [
   {
-    service_id: 'fedex_international_connect_ddu',
-    service_name: 'FedEx International Connect DDU',
-    carrier: 'FEDEX',
+    service_id: 'usps_ground_advantage',
+    service_name: 'USPS Ground Advantage',
+    carrier: 'USPS',
     validation_type: 'oversized',
     constraints: {
-      weight_max_g: 29937,
-      max_single_dimension_mm: 1499,
-      max_combined_dimensions_mm: 3302
+      weight_max_g: 31751,
+      max_single_dimension_mm: 1092,
+      max_combined_dimensions_mm: 2794,
+      combined_calculation_method: 'length_plus_girth'
     }
   },
   {
-    service_id: 'fedex_priority_overnight',
-    service_name: 'FedEx Priority Overnight',
-    carrier: 'FEDEX',
-    validation_type: 'oversized',
-    constraints: {
-      weight_max_g: 31752,
-      max_single_dimension_mm: 1524,
-      max_combined_dimensions_mm: 3302
-    }
-  },
-  {
-    service_id: 'fedex_international_connect_plus_gb_ddp',
-    service_name: 'FedEx International Connect Plus GB DDP',
-    carrier: 'FEDEX',
-    validation_type: 'oversized',
-    constraints: {
-      weight_max_g: 29937,
-      max_single_dimension_mm: 1499,
-      max_combined_dimensions_mm: 3302
-    }
-  },
-  {
-    service_id: 'fedex_international_connect_plus_gb_ddu',
-    service_name: 'FedEx International Connect Plus GB DDU',
-    carrier: 'FEDEX',
-    validation_type: 'oversized',
-    constraints: {
-      weight_max_g: 29937,
-      max_single_dimension_mm: 1499,
-      max_combined_dimensions_mm: 3302
-    }
-  },
-  {
-    service_id: 'fedex_international_connect_ddp',
-    service_name: 'FedEx International Connect DDP',
-    carrier: 'FEDEX',
-    validation_type: 'oversized',
-    constraints: {
-      weight_max_g: 29937,
-      max_single_dimension_mm: 1499,
-      max_combined_dimensions_mm: 3302
-    }
-  },
-  {
-    service_id: 'fedex_international_connect_plus',
-    service_name: 'FedEx International Connect Plus',
-    carrier: 'FEDEX',
-    validation_type: 'oversized',
-    constraints: {
-      weight_max_g: 29937,
-      max_single_dimension_mm: 1499,
-      max_combined_dimensions_mm: 3302
-    }
-  },
-  {
-    service_id: 'fedex_international_connect_gb_ddu',
-    service_name: 'FedEx International Connect GB DDU',
-    carrier: 'FEDEX',
+    service_id: 'usps_first_class_package',
+    service_name: 'USPS First Class Package',
+    carrier: 'USPS',
     validation_type: 'dimension_limits',
     constraints: {
-      max_single_dimension_mm: 1499,
-      weight_max_g: 29937
+      weight_max_g: 453,
+      max_single_dimension_mm: 559
     }
   },
   {
-    service_id: 'fedex_international_connect_gb_ddp',
-    service_name: 'FedEx International Connect GB DDP',
-    carrier: 'FEDEX',
-    validation_type: 'dimension_limits',
-    constraints: {
-      max_single_dimension_mm: 1499,
-      weight_max_g: 29937
-    }
-  },
-  {
-    service_id: 'fedex_international_connect_plus_ddu',
-    service_name: 'FedEx International Connect Plus DDU',
-    carrier: 'FEDEX',
-    validation_type: 'oversized',
-    constraints: {
-      weight_max_g: 29937,
-      max_single_dimension_mm: 1499,
-      max_combined_dimensions_mm: 3302
-    }
-  }
-];
-
-// Combine all services
-const allServiceConfigs: ServiceConfig[] = [
-  ...evriServices,
-  ...amazonServices,
-  ...royalMailServices,
-  ...upsServices,
-  ...dhlServices,
-  ...fedexServices
-  // Additional carriers would go here...
-];
-
-// Export configurations
-export {
-  ServiceConfig,
-  evriServices,
-  amazonServices,
-  royalMailServices,
-  upsServices,
-  dhlServices,
-  fedexServices,
-  allServiceConfigs
-};
-
-// Summary statistics
-export const conversionSummary = {
-  totalServices: 192,
-  totalCarriers: 46,
-  validationTypes: {
-    box_fit: 38,
-    dimension_limits: 45,
-    oversized: 109
-  },
-  conversionDate: '2025-01-08',
-  sourceFile: 'packagevaliadationdump.csv',
-  originalRules: 592
-};
-
-/**
- * Usage Examples:
- * 
- * import { evriServices, allServiceConfigs } from './converted-service-configs';
- * 
- * // Use with dimension validator
- * const validator = new DimensionValidator(allServiceConfigs);
- * const validServices = validator.getValidServices(packageData);
- * 
- * // Filter by carrier
- * const evriOnly = allServiceConfigs.filter(s => s.carrier === 'EVRI');
- * 
- * // Filter by validation type
- * const boxFitServices = allServiceConfigs.filter(s => s.validation_type === 'box_fit');
- */
-
-/**
- * Conversion Notes:
- * 
- * 1. Original rules were exclusion-based (if condition then exclude)
- * 2. Converted to inclusion-based constraints (service valid if constraints met)
- * 3. Weight limits converted from exclusion thresholds to maximum values
- * 4. Dimension limits standardized to mm units
- * 5. Complex girth calculations mapped to 'oversized' validation type
- * 6. Box dimensions extracted from fitsDimensions() rules
- * 
- * Key Improvements:
- * - Standardized constraint format across all carriers
- * - Clear separation of validation patterns
- * - Ready for integration with cost optimization algorithms
- * - Supports easy addition of new carriers and services
- */
+    service_id: 'usps_priority_mail_standard',
+    service_name: 'USPS Priority Mail Standard',
+    carrier: 'USPS',
