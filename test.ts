@@ -1,12 +1,3 @@
-/**
- * Complete Corrected Service Configurations - All Carriers
- * 
- * Generated from: packagevaliadationdump.csv (592 rules)
- * Correction Date: 2025-01-08
- * 
- * Total Services: 192
- * Total Carriers: 46
- * 
 
 interface ServiceConfig {
   service_id: string;
