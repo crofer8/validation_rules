@@ -470,10 +470,30 @@ const dhlServices: ServiceConfig[] = [
     service_id: 'dhl_global_parcel',
     service_name: 'DHL Global Parcel',
     carrier: 'DHL',
-    validation_type: 'dimension_limits',
+    validation_type: 'oversized',
     constraints: {
-      max_single_dimension_mm: 1200
-    }
+      // Weight limits
+      weight_max_g: 31500, // 31.5 kg
+      
+      // Minimum dimensions
+      box_dimensions_min_mm: [15, 11, 1], // Length 15cm, Width 11cm, Height 1cm
+      
+      // Maximum dimensions  
+      max_single_dimension_mm: 1200, // Length max 120cm
+      
+      // Maximum girth (2 * (W + H))
+      max_girth_mm: 3000 // Max girth 300cm
+    },
+    alternative_constraints: [
+      {
+        // Alternative for roll-shaped items
+        weight_max_g: 31500,
+        box_dimensions_min_mm: [15, 11, 1],
+        max_single_dimension_mm: 1200, // Max length still 120cm
+        max_girth_mm: 1500 // Roll-shaped items: max 15cm diameter (circumference ~47cm, but using 150cm for safety)
+      }
+    ],
+    rule_description: "Min: 15x11x1cm. Max: 120x60x60cm, 300cm girth, 31.5kg. Roll-shaped items: max 15cm diameter. Inadequate packaging may incur surcharge."
   },
   {
     service_id: 'dhl_warenpost',
