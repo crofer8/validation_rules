@@ -14,9 +14,9 @@ interface ServiceConstraint {
   box_dimensions_mm?: number[];
   box_dimensions_min_mm?: number[];
   max_single_dimension_mm?: number;
-  min_single_dimension_mm?: number;  // Added for your use case
+  min_single_dimension_mm?: number;
   max_combined_dimensions_mm?: number;
-  min_combined_dimensions_mm?: number;  // Added for your use case
+  min_combined_dimensions_mm?: number;
   max_girth_mm?: number;
   max_length_plus_girth_mm?: number;
   combined_calculation_method?: 'standard_sum' | 'length_plus_girth' | 'circumference' | 'custom';
@@ -27,46 +27,46 @@ interface ServiceConfig {
   service_name: string;
   carrier: string;
   validation_type: 'box_fit' | 'dimension_limits' | 'oversized';
-  
-  // Primary constraint (most services have just one)
   constraints: ServiceConstraint;
-  
-  // Additional constraints for OR conditions (industry standard approach)
-  // If ANY constraint in this array is met, the service is available
-  alternative_constraints?: ServiceConstraint[];
-  
-  // Human readable rule description
   rule_description?: string;
 }
 
-// EVRI Services with updated Light & Large configuration
+// EVRI Services with multiple rules per service (OR condition between same service_id)
 const evriServices: ServiceConfig[] = [
+  // EVRI Light & Large - Rule 1: Heavy packages (15-30kg) with standard dimensions
   {
     service_id: 'evri_light_large',
     service_name: 'EVRI Light & Large',
     carrier: 'EVRI',
-    validation_type: 'dimension_limits', // Primary validation type for the main constraint
+    validation_type: 'dimension_limits',
     constraints: {
-      // Option 1: Heavy packages (15-30kg) with standard dimension limits
       weight_min_g: 15000,
       weight_max_g: 30000,
       max_single_dimension_mm: 1200,
       max_combined_dimensions_mm: 2250,
       combined_calculation_method: 'standard_sum'
     },
-    alternative_constraints: [
-      {
-        // Option 2: Light packages (any weight up to 30kg) with oversized dimensions
-        weight_max_g: 30000,
-        min_single_dimension_mm: 1200,     // Single dimension MUST exceed 1.2m
-        max_single_dimension_mm: 1800,     // But not exceed 1.8m
-        min_combined_dimensions_mm: 2250,  // Combined dimensions MUST exceed 2.25m
-        max_girth_mm: 2400,                // Max girth 2.4m
-        max_length_plus_girth_mm: 4200     // Max length + girth 4.2m
-      }
-    ],
-    rule_description: "For parcels 15-30kg OR exceeding standard dimension limits (single dimension >120cm OR combined dimensions >225cm). Max limits: 180cm single, 240cm girth, 420cm length+girth"
+    rule_description: "Heavy packages (15-30kg) within standard dimension limits"
   },
+  
+  // EVRI Light & Large - Rule 2: Oversized packages (any weight up to 30kg)
+  {
+    service_id: 'evri_light_large',
+    service_name: 'EVRI Light & Large',
+    carrier: 'EVRI',
+    validation_type: 'oversized',
+    constraints: {
+      weight_max_g: 30000,
+      min_single_dimension_mm: 1200,     // Must exceed 120cm single dimension
+      max_single_dimension_mm: 1800,     // But not exceed 180cm
+      min_combined_dimensions_mm: 2250,  // Must exceed 225cm combined dimensions
+      max_girth_mm: 2400,                // Max girth 240cm
+      max_length_plus_girth_mm: 4200     // Max length + girth 420cm
+    },
+    rule_description: "Oversized packages exceeding standard limits (>120cm single OR >225cm combined)"
+  },
+
+  // EVRI Large Letters
   {
     service_id: 'evri_large_letter_48',
     service_name: 'EVRI Large Letter 48',
@@ -89,13 +89,15 @@ const evriServices: ServiceConfig[] = [
       box_dimensions_mm: [350, 230, 30]
     }
   },
+
+  // EVRI Packets
   {
     service_id: 'evri_24_packets',
     service_name: 'EVRI 24 Packets',
     carrier: 'EVRI',
     validation_type: 'dimension_limits',
     constraints: {
-      weight_max_g: 1201,
+      weight_max_g: 1200,
       max_single_dimension_mm: 1200,
       max_combined_dimensions_mm: 2250,
       combined_calculation_method: 'standard_sum'
@@ -107,12 +109,14 @@ const evriServices: ServiceConfig[] = [
     carrier: 'EVRI',
     validation_type: 'dimension_limits',
     constraints: {
-      weight_max_g: 1201,
+      weight_max_g: 1200,
       max_single_dimension_mm: 1200,
       max_combined_dimensions_mm: 2250,
       combined_calculation_method: 'standard_sum'
     }
   },
+
+  // EVRI Parcels
   {
     service_id: 'evri_24_parcels',
     service_name: 'EVRI 24 Parcels',
@@ -139,33 +143,46 @@ const evriServices: ServiceConfig[] = [
   }
 ];
 
-// Example validation logic to handle the OR condition
-function validateService(package: Package, serviceConfig: ServiceConfig): boolean {
-  // First try the primary constraints
-  if (validateConstraints(package, serviceConfig.constraints, serviceConfig.validation_type)) {
-    return true;
-  }
+// Example validation logic - OR condition between rules with same service_id
+function getValidServices(package: Package, services: ServiceConfig[]): string[] {
+  const validServiceIds = new Set<string>();
   
-  // If primary fails, try alternative constraints (OR condition)
-  if (serviceConfig.alternative_constraints) {
-    return serviceConfig.alternative_constraints.some(altConstraint => 
-      validateConstraints(package, altConstraint, determineValidationType(altConstraint))
+  // Group services by service_id
+  const serviceGroups = services.reduce((groups, service) => {
+    if (!groups[service.service_id]) {
+      groups[service.service_id] = [];
+    }
+    groups[service.service_id].push(service);
+    return groups;
+  }, {} as Record<string, ServiceConfig[]>);
+  
+  // Check each service group - if ANY rule passes, service is valid (OR condition)
+  Object.entries(serviceGroups).forEach(([serviceId, rules]) => {
+    const isValidService = rules.some(rule => 
+      validateConstraints(package, rule.constraints, rule.validation_type)
     );
-  }
+    
+    if (isValidService) {
+      validServiceIds.add(serviceId);
+    }
+  });
   
-  return false;
+  return Array.from(validServiceIds);
 }
 
-function determineValidationType(constraints: ServiceConstraint): string {
-  // Logic to determine validation type based on constraint properties
-  if (constraints.max_girth_mm || constraints.max_length_plus_girth_mm) {
-    return 'oversized';
-  }
-  if (constraints.min_single_dimension_mm || constraints.min_combined_dimensions_mm) {
-    return 'oversized'; // Complex dimension checking
-  }
-  return 'dimension_limits';
-}
+// Example usage
+const package = {
+  length: 1300,    // 130cm - exceeds standard limit
+  width: 200,      // 20cm
+  height: 100,     // 10cm
+  weight: 5000,    // 5kg - light package
+  dimension_unit: 'mm',
+  weight_unit: 'g'
+};
+
+const validServices = getValidServices(package, evriServices);
+console.log('Valid services:', validServices);
+// Output: ['evri_light_large'] - because it matches Rule 2 (oversized dimensions)
 // Amazon Services (Updated to new structure)
 const amazonServices: ServiceConfig[] = [
   {
