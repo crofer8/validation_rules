@@ -14,9 +14,12 @@ interface ServiceConstraint {
   box_dimensions_mm?: number[];
   box_dimensions_min_mm?: number[];
   max_single_dimension_mm?: number;
+  min_single_dimension_mm?: number;  // Added for your use case
   max_combined_dimensions_mm?: number;
+  min_combined_dimensions_mm?: number;  // Added for your use case
   max_girth_mm?: number;
   max_length_plus_girth_mm?: number;
+  combined_calculation_method?: 'standard_sum' | 'length_plus_girth' | 'circumference' | 'custom';
 }
 
 interface ServiceConfig {
@@ -36,40 +39,33 @@ interface ServiceConfig {
   rule_description?: string;
 }
 
-// EVRI Services with OR conditions handled via alternative_constraints
+// EVRI Services with updated Light & Large configuration
 const evriServices: ServiceConfig[] = [
   {
     service_id: 'evri_light_large',
     service_name: 'EVRI Light & Large',
     carrier: 'EVRI',
-    validation_type: 'oversized',
+    validation_type: 'dimension_limits', // Primary validation type for the main constraint
     constraints: {
-      // Primary constraint: Heavy packages (15-30kg)
+      // Option 1: Heavy packages (15-30kg) with standard dimension limits
       weight_min_g: 15000,
       weight_max_g: 30000,
-      max_single_dimension_mm: 1800,
-      max_girth_mm: 2400,
-      max_length_plus_girth_mm: 4200
+      max_single_dimension_mm: 1200,
+      max_combined_dimensions_mm: 2250,
+      combined_calculation_method: 'standard_sum'
     },
     alternative_constraints: [
       {
-        // Alternative 1: Light packages with large single dimension
-        weight_max_g: 15000,
-        max_single_dimension_mm: 1800,
-        max_girth_mm: 2400,
-        max_length_plus_girth_mm: 4200
-        // Note: This would need business logic to check if single dim > standard limits
-      },
-      {
-        // Alternative 2: Light packages with large combined dimensions  
-        weight_max_g: 15000,
-        max_combined_dimensions_mm: 2250, // Exceeds standard 225cm limit
-        max_single_dimension_mm: 1800,
-        max_girth_mm: 2400,
-        max_length_plus_girth_mm: 4200
+        // Option 2: Light packages (any weight up to 30kg) with oversized dimensions
+        weight_max_g: 30000,
+        min_single_dimension_mm: 1200,     // Single dimension MUST exceed 1.2m
+        max_single_dimension_mm: 1800,     // But not exceed 1.8m
+        min_combined_dimensions_mm: 2250,  // Combined dimensions MUST exceed 2.25m
+        max_girth_mm: 2400,                // Max girth 2.4m
+        max_length_plus_girth_mm: 4200     // Max length + girth 4.2m
       }
     ],
-    rule_description: "For parcels 15-30kg OR exceeding standard dimension limits (120cm single or 225cm combined). Max: 180cm single, 240cm girth, 420cm length+girth"
+    rule_description: "For parcels 15-30kg OR exceeding standard dimension limits (single dimension >120cm OR combined dimensions >225cm). Max limits: 180cm single, 240cm girth, 420cm length+girth"
   },
   {
     service_id: 'evri_large_letter_48',
@@ -101,7 +97,8 @@ const evriServices: ServiceConfig[] = [
     constraints: {
       weight_max_g: 1201,
       max_single_dimension_mm: 1200,
-      max_combined_dimensions_mm: 2250
+      max_combined_dimensions_mm: 2250,
+      combined_calculation_method: 'standard_sum'
     }
   },
   {
@@ -112,7 +109,8 @@ const evriServices: ServiceConfig[] = [
     constraints: {
       weight_max_g: 1201,
       max_single_dimension_mm: 1200,
-      max_combined_dimensions_mm: 2250
+      max_combined_dimensions_mm: 2250,
+      combined_calculation_method: 'standard_sum'
     }
   },
   {
@@ -121,9 +119,10 @@ const evriServices: ServiceConfig[] = [
     carrier: 'EVRI',
     validation_type: 'dimension_limits',
     constraints: {
-      weight_max_g: 15001,
+      weight_max_g: 15000,
       max_single_dimension_mm: 1200,
-      max_combined_dimensions_mm: 2250
+      max_combined_dimensions_mm: 2250,
+      combined_calculation_method: 'standard_sum'
     }
   },
   {
@@ -132,13 +131,41 @@ const evriServices: ServiceConfig[] = [
     carrier: 'EVRI',
     validation_type: 'dimension_limits',
     constraints: {
-      weight_max_g: 15001,
+      weight_max_g: 15000,
       max_single_dimension_mm: 1200,
-      max_combined_dimensions_mm: 2250
+      max_combined_dimensions_mm: 2250,
+      combined_calculation_method: 'standard_sum'
     }
   }
 ];
 
+// Example validation logic to handle the OR condition
+function validateService(package: Package, serviceConfig: ServiceConfig): boolean {
+  // First try the primary constraints
+  if (validateConstraints(package, serviceConfig.constraints, serviceConfig.validation_type)) {
+    return true;
+  }
+  
+  // If primary fails, try alternative constraints (OR condition)
+  if (serviceConfig.alternative_constraints) {
+    return serviceConfig.alternative_constraints.some(altConstraint => 
+      validateConstraints(package, altConstraint, determineValidationType(altConstraint))
+    );
+  }
+  
+  return false;
+}
+
+function determineValidationType(constraints: ServiceConstraint): string {
+  // Logic to determine validation type based on constraint properties
+  if (constraints.max_girth_mm || constraints.max_length_plus_girth_mm) {
+    return 'oversized';
+  }
+  if (constraints.min_single_dimension_mm || constraints.min_combined_dimensions_mm) {
+    return 'oversized'; // Complex dimension checking
+  }
+  return 'dimension_limits';
+}
 // Amazon Services (Updated to new structure)
 const amazonServices: ServiceConfig[] = [
   {
