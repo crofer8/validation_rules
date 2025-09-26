@@ -95,24 +95,22 @@ const evriServices: ServiceConfig[] = [
     service_id: 'evri_24_packets',
     service_name: 'EVRI 24 Packets',
     carrier: 'EVRI',
-    validation_type: 'dimension_limits',
+    validation_type: 'box_fit',
     constraints: {
-      weight_max_g: 1200,
-      max_single_dimension_mm: 1200,
-      max_combined_dimensions_mm: 2250,
-      combined_calculation_method: 'standard_sum'
+      weight_min_g: 250,
+      weight_max_g: 1000,
+      box_dimensions_mm: [350, 230, 30]
     }
   },
   {
     service_id: 'evri_48_packets',
     service_name: 'EVRI 48 Packets',
     carrier: 'EVRI',
-    validation_type: 'dimension_limits',
+    validation_type: 'box_fit',
     constraints: {
-      weight_max_g: 1200,
-      max_single_dimension_mm: 1200,
-      max_combined_dimensions_mm: 2250,
-      combined_calculation_method: 'standard_sum'
+      weight_min_g: 250,
+      weight_max_g: 1000,
+      box_dimensions_mm: [350, 230, 30]
     }
   },
 
@@ -125,8 +123,8 @@ const evriServices: ServiceConfig[] = [
     constraints: {
       weight_max_g: 15000,
       max_single_dimension_mm: 1200,
-      max_combined_dimensions_mm: 2250,
-      combined_calculation_method: 'standard_sum'
+      max_combined_dimensions_mm: 2450,
+      combined_calculation_method: 'length_plus_girth'
     }
   },
   {
@@ -137,8 +135,8 @@ const evriServices: ServiceConfig[] = [
     constraints: {
       weight_max_g: 15000,
       max_single_dimension_mm: 1200,
-      max_combined_dimensions_mm: 2250,
-      combined_calculation_method: 'standard_sum'
+      max_combined_dimensions_mm: 2450,
+      combined_calculation_method: 'length_plus_girth'
     }
   }
 ];
