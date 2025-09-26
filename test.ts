@@ -189,8 +189,7 @@ const amazonServices: ServiceConfig[] = [
     carrier: 'AMAZON',
     validation_type: 'box_fit',
     constraints: {
-      box_dimensions_mm: [1200, 600, 600],
-      max_combined_dimensions_mm: 2450
+      box_dimensions_mm: [1200, 600, 600]
     }
   },
   {
@@ -199,8 +198,7 @@ const amazonServices: ServiceConfig[] = [
     carrier: 'AMAZON',
     validation_type: 'box_fit',
     constraints: {
-      box_dimensions_mm: [670, 510, 510],
-      max_combined_dimensions_mm: 2450
+      box_dimensions_mm: [670, 510, 510]
     }
   },
   {
@@ -239,17 +237,6 @@ const amazonServices: ServiceConfig[] = [
     constraints: {
       box_dimensions_mm: [1200, 600, 600],
       max_combined_dimensions_mm: 2450
-    }
-  },
-  {
-    service_id: 'amazon_shipping_48',
-    service_name: 'Amazon Shipping 48',
-    carrier: 'AMAZON',
-    validation_type: 'dimension_limits',
-    constraints: {
-      max_single_dimension_mm: 610,
-      max_combined_dimensions_mm: 900,
-      weight_max_g: 2000
     }
   },
   {
@@ -295,17 +282,6 @@ const amazonServices: ServiceConfig[] = [
     validation_type: 'box_fit',
     constraints: {
       box_dimensions_mm: [500, 400, 300]
-    }
-  },
-  {
-    service_id: 'amazon_shipping_24',
-    service_name: 'Amazon Shipping 24',
-    carrier: 'AMAZON',
-    validation_type: 'dimension_limits',
-    constraints: {
-      max_single_dimension_mm: 610,
-      max_combined_dimensions_mm: 900,
-      weight_max_g: 2000
     }
   },
   {
